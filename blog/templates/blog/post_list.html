@@ -1,0 +1,31 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<p class="cats">
+  <a href="{% url 'blog:post_list' %}">All</a>
+  {% for c in categories %}
+    <a href="{% url 'blog:post_by_category' c.slug %}">{{ c.name }}</a>
+  {% endfor %}
+</p>
+
+{% if category %}<h3>Category: {{ category.name }}</h3>{% endif %}
+{% if q %}<h3>Results for “{{ q }}”</h3>{% endif %}
+
+{% for post in page %}
+  <article>
+    <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+    <p class="meta">{{ post.published_at|date:"M j, Y" }} · {{ post.author }}{% if post.category %} · {{ post.category }}{% endif %}</p>
+    <p>{{ post.body|truncatewords:40 }}</p>
+  </article>
+{% empty %}
+  <p>No posts yet. Create some in <a href="/admin/">the admin</a>.</p>
+{% endfor %}
+
+{% if page.has_other_pages %}
+<p>
+  {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}">← Newer</a>{% endif %}
+  Page {{ page.number }} of {{ page.paginator.num_pages }}
+  {% if page.has_next %}<a href="?page={{ page.next_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}">Older →</a>{% endif %}
+</p>
+{% endif %}
+{% endblock %}

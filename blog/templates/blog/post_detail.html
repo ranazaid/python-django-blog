@@ -1,0 +1,23 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }} · Sample Blog{% endblock %}
+
+{% block content %}
+<article>
+  <h1>{{ post.title }}</h1>
+  <p class="meta">{{ post.published_at|date:"M j, Y" }} · {{ post.author }}{% if post.category %} · <a href="{% url 'blog:post_by_category' post.category.slug %}">{{ post.category }}</a>{% endif %}</p>
+  {{ post.body|linebreaks }}
+</article>
+
+<h3>{{ comments|length }} comment{{ comments|length|pluralize }}</h3>
+{% for c in comments %}
+  <p><strong>{{ c.name }}</strong> <span class="meta">{{ c.created_at|date:"M j, Y H:i" }}</span><br>{{ c.body|linebreaksbr }}</p>
+{% endfor %}
+
+<h3>Leave a comment</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Post comment</button>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sample Blog{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; line-height: 1.6; color: #222; }
+    a { color: #0b57d0; text-decoration: none; } a:hover { text-decoration: underline; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 12px; }
+    .meta { color: #666; font-size: 14px; }
+    .cats a { margin-right: 10px; font-size: 14px; }
+    article { border-bottom: 1px solid #eee; padding: 16px 0; }
+    textarea, input[type=text] { width: 100%; padding: 8px; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2><a href="{% url 'blog:post_list' %}">Sample Blog</a></h2>
+    <form method="get" action="{% url 'blog:post_list' %}">
+      <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search…">
+    </form>
+  </header>
+  {% block content %}{% endblock %}
+</body>
+</html>
